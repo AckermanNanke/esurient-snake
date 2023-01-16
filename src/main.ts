@@ -10,7 +10,7 @@ const snakeClass = new esurientSnake();
  */
 function throttle(func: Function, wait: number) {
   let preTime = 0;
-  return function () {
+  return function (this: any) {
     let now = Date.now();
     if (Date.now() - preTime > wait) {
       func.apply(this, arguments);
@@ -28,6 +28,7 @@ document.addEventListener("keydown", throttle((event: KeyboardEvent) => {
   // startSnake.snakeMove(currentX, currentY);
   if (snakeClass.isPause) {
     snakeClass.snakeMove(snakeClass.direction!);
+    snakeClass.isPause = false
   } else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.code)) {
     snakeClass.snakeMove(event.code as "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight");
   }
@@ -38,6 +39,7 @@ document.addEventListener("keydown", throttle((event: KeyboardEvent) => {
 document.getElementById("start")!.addEventListener("click", throttle(() => {
   if (snakeClass.isPause) {
     snakeClass.snakeMove(snakeClass.direction!);
+    snakeClass.isPause = false
   } else {
     snakeClass.snakeMove("ArrowRight");
   }
